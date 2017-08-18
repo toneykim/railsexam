@@ -1,0 +1,45 @@
+<p>Hi  <%= @first_name %></p>
+
+<a href="/dashboard/<%=@uid%>">Go to Dashboard</a>
+<a href="/sessions/logout">Logout</a>
+
+<p>All Products</p>
+
+<table border="1" width="1200">
+<tr>
+<th>Product</th><th>Seller</th><th>Date Posted</th><th>Amount</th><th>Action</th>
+</tr>
+<% @forsale.each  do |p|  %>
+<tr>
+<td>
+<%= p.item_name  %>
+</td>
+<td>
+<%= p.first_name %> <%=p.last_name %>
+</td>
+<td>
+<%= p.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %I:%M:%S %p ") %>
+</td>
+<td>
+<%= p.amount %>
+
+</td>
+<td>
+<a href="/products/buy/<%=p.id%>">Buy</a>
+
+
+</td>
+
+
+
+
+
+</tr>
+<% end  %>
+
+
+
+
+
+
+</table>

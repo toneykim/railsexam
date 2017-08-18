@@ -1,0 +1,142 @@
+<p>Hi  <%= @first_name %></p>
+
+<a href="/shoes">Go to All Products</a>
+<a href="/sessions/logout">Logout</a>
+<p>Sell Product</p>
+
+
+<form   action="/products/new" method="post">
+<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>"
+<p>Product Name <input type="text" name="item_name"></p>
+<p>Amount <input type="text" name="amount" placeholder="$0.00"></p>
+<input type="submit" value="Submit">
+</form>
+
+
+
+<p>Your products that are not yet sold:</p>
+
+<table border="1" width="1200">
+<tr>
+<th>Product</th><th>Date Posted</th><th>Amount</th><th>Action</th>
+</tr>
+
+<% @notyetsold.each do |p|  %>
+
+<tr>
+<td>
+<%= p.item_name   %>
+</td>
+<td>
+<%= p.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %I:%M:%S %p ") %>
+</td>
+<td>
+<%= p.amount %>
+
+</td>
+<td>
+<a href="/products/delete/<%=p.id%>"  data-confirm="Remove Product?" data-method="DELETE">Remove</a>
+
+</td>
+
+
+
+</tr>
+<% end  %>
+
+
+
+
+</table>
+
+<p>Sales</p>
+
+<table border="1" width="1200">
+<tr>
+<th>Product</th><th>Date bought</th><th>Buyer</th><th>Amount</th>
+
+</tr>
+<% @sales.each do |p| %>
+<tr>
+<td>
+<%= p.item_name %>
+
+</td>
+
+<td>
+
+
+
+<% @a2 = Buying.where(product_id:p.product_id) %>
+<% @a2.each do |y| %>
+
+<%= y.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %I:%M:%S %p ") %>
+
+<% end %>
+
+</td>
+<td>
+<%=p.first_name %> <%=p.last_name%>
+</td>
+<td>
+<%=p.amount %>
+</td>
+
+</tr>
+<% end %>
+
+
+
+
+
+</table>
+Total : $<%=@totalsales%>
+
+
+
+
+
+<p>Purchases</p>
+<table border="1" width="1200">
+<tr>
+<th>Product</th>
+<th>Date Bought</th>
+<th>Seller</th>
+<th>Amount</th>
+
+</tr>
+<% @purchases.each do |p|  %>
+<tr>
+<td>
+<%=p.item_name  %>
+</td>
+<td>
+<%= p.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%B %d, %Y %I:%M:%S %p ")%>
+</td>
+<td>
+<%= User.find(p.user_id).first_name %> <%= User.find(p.user_id).last_name %>
+
+</td>
+<td>
+<%= p.amount %>
+
+</td>
+
+
+
+</tr>
+<% end %>
+
+
+
+
+
+
+
+</table>
+
+Total : $<%=@totalpurchases%>
+
+
+
+
